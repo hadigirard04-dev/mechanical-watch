@@ -150,3 +150,12 @@ python -B -X utf8 scripts/capture.py --mobile --probe   # 15 张截图 + 交互�
 - 主夹板细轴（半径 0.085 mm）不参与平面碰撞校验——真表里它们穿过轮辐空隙，几何简化后无法逐点判定。
 - 擒纵与摆轮的显示频率是**限频**的（避免采样混叠），真值见机芯读数表。
 - 移动端竖屏下机芯特写会退后 2.2 倍以避免裁切，细节可读性弱于桌面。
+- 手机触摸拖拽旋转**未启用**（`js/main.js` 对 `pointerType === 'touch'` 直接返回，画布 `touch-action: pan-y`）；
+  手机端以滚动翻幕为主。
+
+## 九、许可与发布
+
+- 源码许可：**MIT**，见 [`LICENSE`](LICENSE)。
+- 第三方：随包分发 `vendor/three/**`（three.js r0.184.0，MIT），署名义务见 [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md)。
+- 部署步骤与发布前检查清单：[`docs/deploy.md`](docs/deploy.md)；打包脚本 `node scripts/package-static.mjs`（产物 `dist/`，不入库）。
+- 仓库含 `.nojekyll`——GitHub Pages 默认会跑 Jekyll 并**排除 `vendor/` 目录**，加这个空文件才能让 `vendor/three/**` 正常被访问。
