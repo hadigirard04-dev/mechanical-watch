@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>AURELIS AU-07 · 机械腕表 · 实时 3D 分解演示</title>
+    <meta
+      name="description"
+      content="实时 WebGL 渲染的高端机械腕表展示：浮现、旋转、爆炸分解、机芯传动与聚合六幕。齿数比与旋向按真实传动推导，无预渲染视频。"
+    />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./css/style.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./vendor/three/three.module.js",
+          "three/addons/": "./vendor/three/addons/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <canvas id="stage" aria-label="机械腕表三维演示画面"></canvas>
+
+    <header class="brand">
+      <span class="brand__mark">AURELIS</span>
+      <span class="brand__sub">GENÈVE · 虚构品牌演示</span>
+    </header>
+
+    <nav class="rail" aria-label="章节导航">
+      <ol id="rail-list"></ol>
+    </nav>
+
+    <main id="story">
+      <section class="act" data-act="0" aria-labelledby="act-0-title">
+        <div class="act__inner">
+          <p class="act__index">01 / 06</p>
+          <h1 class="act__title" id="act-0-title">初现</h1>
+          <p class="act__en">EMERGENCE</p>
+          <p class="act__copy">腕表自暗处浮现，镜头缓缓推进，盘面的太阳纹与印刷分钟轨道依次点亮。</p>
+          <dl class="act__spec">
+            <div><dt>表壳</dt><dd>40.0 mm 精钢</dd></div>
+            <div><dt>厚度</dt><dd>10.15 mm</dd></div>
+            <div><dt>表镜</dt><dd>双面防眩蓝宝石</dd></div>
+            <div><dt>机芯</dt><dd>AU-07 · 28.6 mm</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="act" data-act="1" aria-labelledby="act-1-title">
+        <div class="act__inner">
+          <p class="act__index">02 / 06</p>
+          <h2 class="act__title" id="act-1-title">巡礼</h2>
+          <p class="act__en">ORBIT</p>
+          <p class="act__copy">抛光与拉丝在同一只壳上交替出现，角度一变，明暗就换。</p>
+          <dl class="act__spec">
+            <div><dt>表面处理</dt><dd>抛光中框 + 拉丝带</dd></div>
+            <div><dt>表耳间距</dt><dd>46.0 mm</dd></div>
+            <div><dt>表带</dt><dd>20 mm 小牛皮</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="act" data-act="2" aria-labelledby="act-2-title">
+        <div class="act__inner">
+          <p class="act__index">03 / 06</p>
+          <h2 class="act__title" id="act-2-title">分解</h2>
+          <p class="act__en">EXPLOSION</p>
+          <p class="act__copy">表镜、表圈、盘面、指针、中框与底盖依次分离；机芯内部逐层展开，每一件都按自己的方向与节奏离开。</p>
+          <dl class="act__spec">
+            <div><dt>分解零件</dt><dd id="spec-part-count">—</dd></div>
+            <div><dt>机芯层数</dt><dd>主夹板 / 4 层轮系 / 桥板</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="act" data-act="3" aria-labelledby="act-3-title">
+        <div class="act__inner">
+          <p class="act__index">04 / 06</p>
+          <h2 class="act__title" id="act-3-title">机芯</h2>
+          <p class="act__en">CALIBRE AU-07</p>
+          <p class="act__copy">
+            发条盒 88 齿驱动二番车 11 叶小齿轮，逐级传递至四番车与擒纵轮；相邻啮合反向，转速由齿数比决定。摆轮 4 Hz，每秒八次。
+          </p>
+          <dl class="act__spec">
+            <div><dt>振频</dt><dd>4 Hz · 28 800 次/小时</dd></div>
+            <div><dt>宝石</dt><dd>27 颗</dd></div>
+            <div><dt>动力储存</dt><dd>42 小时</dd></div>
+            <div><dt>显示倍率</dt><dd id="spec-tempo">×60（可切换真值）</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="act" data-act="4" aria-labelledby="act-4-title">
+        <div class="act__inner">
+          <p class="act__index">05 / 06</p>
+          <h2 class="act__title" id="act-4-title">聚合</h2>
+          <p class="act__en">REASSEMBLY</p>
+          <p class="act__copy">分离的零件沿原路归位，错峰被压缩，重新成为一只完整的腕表。</p>
+          <dl class="act__spec">
+            <div><dt>归位顺序</dt><dd>机芯 → 中框 → 盘面 → 指针 → 表圈</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="act act--hero" data-act="5" aria-labelledby="act-5-title">
+        <div class="act__inner">
+          <div class="cta">
+            <p class="cta__index">06 / 06 · SIGNATURE</p>
+            <h2 class="cta__tagline" id="act-5-title">每一秒，八次心跳</h2>
+            <p class="cta__sub">AURELIS Calibre AU-07 · 手动上链 · 4 Hz · 42 小时动力储存</p>
+            <div class="cta__actions">
+              <button type="button" class="btn btn--primary" data-action="movement">探索机芯</button>
+              <button type="button" class="btn" data-action="tempo" id="tempo-btn" aria-pressed="false">切换真实节拍 ×1</button>
+              <button type="button" class="btn" data-action="restart">从头观看</button>
+            </div>
+            <p class="cta__note">
+              齿数、模数、中心距、旋向与转速均由传动链推导并自检；轮系与擒纵的<em>显示</em>速度做了倍率与限频，真值见机芯读数。
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="readout" id="readout" aria-hidden="true">
+      <h3 class="readout__title">机芯读数</h3>
+      <p class="readout__sub">CALIBRE AU-07 · 自桥板侧观察</p>
+      <div class="readout__table-wrap">
+        <table class="readout__table">
+          <thead>
+            <tr><th>部件</th><th>齿数</th><th>实际</th><th>显示</th><th>旋向</th></tr>
+          </thead>
+          <tbody id="readout-body"></tbody>
+        </table>
+      </div>
+      <p class="readout__note" id="readout-note"></p>
+    </aside>
+
+    <div class="hud hud--progress">
+      <span class="hud__label">SCROLL</span>
+      <span class="hud__value" id="progress-value">00</span>
+    </div>
+
+    <div class="hud hud--hint" id="scroll-hint">
+      <span class="hud__hint-text">向下滚动</span>
+      <span class="hud__hint-line" aria-hidden="true"></span>
+    </div>
+
+    <div class="loader" id="loader">
+      <div class="loader__bar"><span id="loader-fill"></span></div>
+      <p class="loader__text" id="loader-text">正在装配机芯…</p>
+    </div>
+
+    <div class="fallback" id="fallback" hidden>
+      <h2>无法启动实时 3D</h2>
+      <p>本页需要支持 WebGL2 的浏览器。请用桌面版 Chrome / Edge / Firefox 打开，并确认未禁用硬件加速。</p>
+    </div>
+
+    <noscript>
+      <div class="fallback">
+        <h2>需要启用 JavaScript</h2>
+        <p>本页为实时 3D 演示，不包含任何预渲染视频或图片序列。</p>
+      </div>
+    </noscript>
+
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "mechanical-watch",
+  "private": true,
+  "type": "module",
+  "description": "电影级机械腕表展示页（实时 WebGL，无预渲染视频）",
+  "scripts": {
+    "serve": "node scripts/serve.cjs",
+    "check:train": "node scripts/check-train.mjs"
+  }
+}

@@ -1,0 +1,9 @@
+# 依赖与缓存
+node_modules/
+__pycache__/
+*.py[cod]
+
+# 系统与编辑器临时文件
+Thumbs.db
+.DS_Store
+~$*

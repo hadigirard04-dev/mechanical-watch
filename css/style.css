@@ -1,0 +1,687 @@
+/* AURELIS AU-07 · 机械腕表展示页
+   深色影棚基调：近黑底、金属灰、单一暖金强调色；排版克制，中文用系统字体 */
+
+:root {
+  --bg: #06070a;
+  --ink: #ecebe6;
+  --ink-dim: #a8adb6;
+  --ink-faint: #6f757e;
+  --gold: #e0b45c;
+  --hair: rgba(255, 255, 255, 0.13);
+  --hair-strong: rgba(255, 255, 255, 0.26);
+  --gutter: 40px;
+  --serif: Constantia, "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --sans: "Segoe UI", "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", Arial, sans-serif;
+  --mono: "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+#stage {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+  touch-action: pan-y;
+}
+
+/* ---------- 品牌标记 ---------- */
+.brand {
+  position: fixed;
+  top: 26px;
+  left: var(--gutter);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.brand__mark {
+  font-family: var(--serif);
+  font-size: 17px;
+  letter-spacing: 0.42em;
+  color: var(--ink);
+}
+
+.brand__sub {
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  color: var(--ink-faint);
+}
+
+/* ---------- 章节导航 ---------- */
+.rail {
+  position: fixed;
+  top: 50%;
+  left: var(--gutter);
+  transform: translateY(-50%);
+  z-index: 3;
+}
+
+.rail ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.rail button {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink-faint);
+  font: inherit;
+  text-align: left;
+}
+
+.rail__num {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+}
+
+.rail__label {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.rail button::before {
+  content: "";
+  grid-column: 1 / -1;
+  grid-row: 1;
+  height: 1px;
+  width: 18px;
+  background: var(--hair);
+  transition: width 0.45s cubic-bezier(0.22, 0.61, 0.36, 1), background 0.45s;
+}
+
+.rail button:hover .rail__label,
+.rail button:focus-visible .rail__label,
+.rail button[aria-current="true"] .rail__label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.rail button[aria-current="true"] {
+  color: var(--ink);
+}
+
+.rail button[aria-current="true"]::before {
+  width: 34px;
+  background: var(--gold);
+}
+
+/* ---------- 章节 ---------- */
+#story {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.act {
+  position: relative;
+  min-height: 140vh;
+  --copy-opacity: 0;
+  --copy-shift: 18px;
+}
+
+.act[data-act="0"] { min-height: 165vh; }
+.act[data-act="2"] { min-height: 150vh; }
+.act[data-act="3"] { min-height: 165vh; }
+
+/* 第 4 幕：机芯占画面上部，文案沉到左下角，右侧留给读数面板 */
+.act[data-act="3"] .act__inner {
+  justify-content: flex-end;
+  padding-bottom: 11vh;
+  max-width: 520px;
+}
+
+.act__inner {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  padding: 0 8vw;
+  max-width: 720px;
+  opacity: var(--copy-opacity);
+  transform: translateY(var(--copy-shift));
+  transition: opacity 0.25s linear;
+}
+
+.act__index {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: var(--gold);
+}
+
+.act__title {
+  margin: 0;
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: clamp(38px, 6vw, 76px);
+  letter-spacing: 0.06em;
+  line-height: 1.05;
+}
+
+.act__en {
+  margin: -6px 0 0;
+  font-size: 11px;
+  letter-spacing: 0.44em;
+  color: var(--ink-faint);
+}
+
+.act__copy {
+  margin: 6px 0 0;
+  max-width: 34ch;
+  font-size: 15px;
+  color: var(--ink-dim);
+  pointer-events: auto;
+}
+
+.act__spec {
+  margin: 10px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  border-top: 1px solid var(--hair);
+  padding-top: 14px;
+  pointer-events: auto;
+}
+
+.act__spec div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.act__spec dt {
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+}
+
+.act__spec dd {
+  margin: 0;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 尾幕 CTA ---------- */
+.act--hero .act__inner {
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
+  max-width: none;
+  padding: 0 6vw 7vh;
+}
+
+.cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  pointer-events: auto;
+}
+
+.cta__index {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--ink-faint);
+}
+
+.cta__tagline {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(30px, 5.2vw, 62px);
+  letter-spacing: 0.14em;
+  line-height: 1.18;
+}
+
+.cta__sub {
+  margin: 0;
+  font-size: 12.5px;
+  letter-spacing: 0.16em;
+  color: var(--ink-dim);
+}
+
+.cta__actions {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn {
+  appearance: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13.5px;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--hair-strong);
+  padding: 12px 24px;
+  border-radius: 2px;
+  transition: background 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.35s, color 0.35s, transform 0.35s;
+}
+
+.btn:hover {
+  background: rgba(224, 180, 92, 0.12);
+  border-color: rgba(224, 180, 92, 0.6);
+  color: #fff;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:focus-visible {
+  outline: 1px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.btn--primary {
+  background: rgba(224, 180, 92, 0.16);
+  border-color: rgba(224, 180, 92, 0.72);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background: rgba(224, 180, 92, 0.28);
+}
+
+.cta__note {
+  margin: 18px 0 0;
+  max-width: 46ch;
+  font-size: 11.5px;
+  line-height: 1.75;
+  color: var(--ink-faint);
+}
+
+.cta__note em {
+  color: var(--ink-dim);
+  font-style: normal;
+}
+
+/* ---------- 机芯读数面板 ---------- */
+.readout {
+  position: fixed;
+  top: 50%;
+  right: var(--gutter);
+  transform: translateY(-50%) translateX(12px);
+  z-index: 3;
+  width: 320px;
+  padding: 18px 18px 14px;
+  border: 1px solid var(--hair);
+  background: rgba(6, 7, 10, 0.62);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.readout.is-visible {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.readout__title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+}
+
+.readout__sub {
+  margin: 4px 0 12px;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
+
+.readout__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.readout__table th {
+  text-align: left;
+  font-weight: 400;
+  color: var(--ink-faint);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--hair);
+}
+
+.readout__table td {
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--ink-dim);
+}
+
+.readout__table td:first-child {
+  color: var(--ink);
+}
+
+.readout__table tr.is-highlight td {
+  color: var(--gold);
+}
+
+.readout__note {
+  margin: 10px 0 0;
+  font-size: 10.5px;
+  line-height: 1.7;
+  color: var(--ink-faint);
+}
+
+/* ---------- HUD ---------- */
+.hud {
+  position: fixed;
+  z-index: 3;
+  pointer-events: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--ink-faint);
+}
+
+.hud--progress {
+  right: var(--gutter);
+  bottom: 26px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.hud--progress .hud__value {
+  font-size: 15px;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.hud--hint {
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.8s ease;
+}
+
+.hud--hint.is-hidden {
+  opacity: 0;
+}
+
+.hud__hint-line {
+  width: 1px;
+  height: 34px;
+  background: linear-gradient(to bottom, var(--hair-strong), transparent);
+  animation: hint 2.6s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+  transform-origin: top;
+}
+
+@keyframes hint {
+  0% { transform: scaleY(0.2); opacity: 0; }
+  35% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+/* ---------- 载入与降级 ---------- */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: var(--bg);
+  transition: opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.loader.is-done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader__bar {
+  width: 180px;
+  height: 1px;
+  background: var(--hair);
+  overflow: hidden;
+}
+
+.loader__bar span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--gold);
+  transition: width 0.3s linear;
+}
+
+.loader__text {
+  margin: 0;
+  font-size: 11.5px;
+  letter-spacing: 0.22em;
+  color: var(--ink-faint);
+}
+
+.fallback {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  padding: 24px;
+  background: var(--bg);
+}
+
+/* hidden 属性必须真的隐藏（否则 display:flex 会覆盖 UA 样式） */
+.fallback[hidden] {
+  display: none;
+}
+
+.fallback h2 {
+  margin: 0;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+}
+
+.fallback p {
+  margin: 0;
+  max-width: 44ch;
+  color: var(--ink-dim);
+  font-size: 14px;
+}
+
+/* 调试 HUD */
+.debug {
+  position: fixed;
+  left: var(--gutter);
+  bottom: 26px;
+  z-index: 4;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 1.7;
+  color: var(--ink-faint);
+  white-space: pre;
+  pointer-events: none;
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 1100px) {
+  .readout {
+    width: 268px;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --gutter: 20px;
+  }
+
+  .rail {
+    top: 22px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+
+  .rail ol {
+    flex-direction: row;
+    gap: 14px;
+  }
+
+  .rail button {
+    grid-template-columns: auto;
+    gap: 0;
+  }
+
+  .rail__label {
+    display: none;
+  }
+
+  .rail button::before {
+    display: none;
+  }
+
+  .rail__num {
+    font-size: 10px;
+  }
+
+  .brand {
+    top: auto;
+    bottom: 22px;
+    left: var(--gutter);
+  }
+
+  .act__inner {
+    justify-content: flex-end;
+    padding: 0 var(--gutter) 92px;
+    max-width: none;
+  }
+
+  .act__copy {
+    max-width: 30ch;
+  }
+
+  .act__title {
+    font-size: clamp(32px, 11vw, 52px);
+  }
+
+  .act__spec {
+    gap: 6px 20px;
+  }
+
+  .act--hero .act__inner {
+    justify-content: center;
+    padding-bottom: 72px;
+  }
+
+  .cta__actions {
+    flex-direction: column;
+    width: min(300px, 86vw);
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .readout {
+    top: auto;
+    bottom: 64px;
+    right: var(--gutter);
+    left: var(--gutter);
+    width: auto;
+    max-height: 42vh;
+    overflow: auto;
+    transform: translateY(14px);
+    padding: 14px;
+  }
+
+  .readout__sub {
+    margin-bottom: 8px;
+  }
+
+  .readout__table td {
+    padding: 3.5px 0;
+  }
+
+  .readout.is-visible {
+    transform: translateY(0);
+  }
+
+  .readout__table th:nth-child(3),
+  .readout__table td:nth-child(3) {
+    display: none;
+  }
+
+  .hud--hint,
+  .hud--progress {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail__label,
+  .btn,
+  .readout,
+  .loader {
+    transition-duration: 0.01ms;
+  }
+
+  .hud__hint-line {
+    animation: none;
+  }
+}

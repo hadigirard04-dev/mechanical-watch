@@ -1,0 +1,6 @@
+url http://127.0.0.1:8788/
+shots 2
+pageerrors 0
+  WARNING THREE.WebGLProgram: Program Info Log: (210,81-129): warning X4122: sum of 0.996094 and -2.98545e-017 cannot be represented accurately in double precision
+(209,37-61): warning X4122: sum of 1 and -1.49272e-017 cannot be r
+stats[desktop] fps=165.0 dpr=1 q=high calls=253 tris=210271 parts=43 tex=31 geo=99
