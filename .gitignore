@@ -3,6 +3,9 @@ node_modules/
 __pycache__/
 *.py[cod]
 
+# 部署产物（scripts/package-static.mjs 生成）
+dist/
+
 # 系统与编辑器临时文件
 Thumbs.db
 .DS_Store
