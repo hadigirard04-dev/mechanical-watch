@@ -1,6 +1,9 @@
 # 发布说明（deploy）
 
-> 本文件是**发布准备**产物，不代表已经公开发布。任何真正对外发布都需要作者本人操作并授权。
+> **已于 2026-10-18 公开发布**：<https://hadigirard04-dev.github.io/mechanical-watch/>
+> 仓库（公开，含完整源码）：<https://github.com/hadigirard04-dev/mechanical-watch>
+> 所用路径 = 下文「A. GitHub Pages」，`Deploy from a branch: main / (root)`，首次构建 commit `eda146d`。
+> 本文件其余内容保留为可复用的发布步骤与检查清单。
 
 ## 一、结论：这是纯静态站点，零构建、零配置文件
 
